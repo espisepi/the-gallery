@@ -2,7 +2,7 @@ import React, { Suspense, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { Canvas } from 'react-three-fiber';
 import { Physics } from 'use-cannon';
-import { Stars, Sky, /* Stats */ } from "@react-three/drei";
+import { Stars, Sky, Stats } from "@react-three/drei";
 import Moon from '../Moon/Moon';
 import Building from '../Building/Building';
 import Ground from '../Ground/Ground';
@@ -11,6 +11,8 @@ import Furniture from '../Furniture/Furniture';
 import Camera from '../Camera/Camera';
 import Player from '../Player/Player';
 import Lights from '../Lights/Lights';
+import Joystick from '../Joystick/Joystick';
+import Fullscreen from '../Fullscreen/Fullscreen';
 
 
 const App = () => {
@@ -45,7 +47,9 @@ const App = () => {
           gl.shadowMap.enabled = true
           gl.shadowMap.type = THREE.PCFSoftShadowMap
         }}
+        style={{position: 'absolute'}}
       >
+        <Stats />
         <Camera fov={60} />
         
         {night ? 
@@ -79,6 +83,8 @@ const App = () => {
         </Physics>
         {/* <Stats  showPanel={0} /> */}
       </Canvas>
+      <Joystick />
+      <Fullscreen />
     </>
   );
 }

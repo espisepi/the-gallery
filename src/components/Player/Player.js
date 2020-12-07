@@ -31,15 +31,32 @@ const Player = (props) => {
   }, [api.velocity])
   
   useFrame(() => {
+    const _Q = new THREE.Quaternion();
+    const _A = new THREE.Vector3();
+    const _R = camera.quaternion.clone();
+
+    if(left) {
+      _A.set(0, 1, 0);
+      _Q.setFromAxisAngle(_A, 0.1 * 0.25);
+      _R.multiply(_Q);
+    }
+    if(right) {
+      _A.set(0, 1, 0);
+      _Q.setFromAxisAngle(_A, - 0.1  * 0.25);
+      _R.multiply(_Q);
+    }
+    camera.quaternion.copy(_R);
+
     //copy position of our physical sphere
     camera.position.copy(ref.current.position)
 
     const frontVector = new THREE.Vector3(0, 0, Number(backward) - Number(forward))
-    const sideVector = new THREE.Vector3(Number(left) - Number(right), 0, 0)
+    // const sideVector = new THREE.Vector3(Number(left) - Number(right), 0, 0)
 
     const direction = new THREE.Vector3()
     //calculate direction aligned with the camera
-    direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(speed).applyEuler(camera.rotation)
+    // direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(speed).applyEuler(camera.rotation)
+    direction.subVectors(frontVector, direction).normalize().multiplyScalar(speed).applyEuler(camera.rotation)
     
     //apply the velocity to our sphere
     api.velocity.set(direction.x, velocity.current[1], direction.z)
@@ -53,7 +70,7 @@ const Player = (props) => {
 
   return (
     <>
-    <PointerLockControls />
+    {/* <PointerLockControls /> */}
     <mesh ref={ref}></mesh>
     </>
     )
